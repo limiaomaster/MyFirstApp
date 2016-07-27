@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/nice_blue"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_marginTop"
+        android:layout_width="fill_parent"
+        android:layout_height="0.4dp"
+        android:background="@color/midnightblue"/>
+
+
+    <ImageView
+        android:id="@+id/call_type"
+        android:background="@drawable/ic_calllog_outgoing_nomal"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"/>
+
+    <TextView
+        android:id="@+id/call_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/ic_calllog_call_btn"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true" />
+
+    <QuickContactBadge
+        android:id="@+id/qcb_img1"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/touxiang"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:layout_toEndOf="@+id/qcb_img1">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="周杰伦"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+           />
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15538864750"
+            android:textSize="15sp"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="#cccccc"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="7月24日12：12：12"
+        android:textSize="12sp"
+        android:textColor="#ffffff"
+        android:layout_centerVertical="true"
+
+        android:layout_toStartOf="@+id/call_btn" />
+
+
+</RelativeLayout>

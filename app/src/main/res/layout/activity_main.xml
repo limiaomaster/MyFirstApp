@@ -1,0 +1,37 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="cn.edu.cdut.myfirstapp.Activity.MainActivity">
+
+    <cn.edu.cdut.myfirstapp.Layout.TitleLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </cn.edu.cdut.myfirstapp.Layout.TitleLayout>
+
+
+    <cn.edu.cdut.myfirstapp.Layout.FootLayout
+        android:id="@+id/foot_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+    </cn.edu.cdut.myfirstapp.Layout.FootLayout>
+
+
+    <LinearLayout
+        android:id="@+id/LL_content_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/foot_layout"
+        android:layout_below="@id/title_layout"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
+
+</RelativeLayout>
