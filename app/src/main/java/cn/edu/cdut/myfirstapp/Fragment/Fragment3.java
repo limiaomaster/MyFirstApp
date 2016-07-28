@@ -54,12 +54,14 @@ public class Fragment3 extends Fragment{
     private void init() {
         Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI; // 联系人Uri；
         // 查询的字段
-        String[] projection = { ContactsContract.CommonDataKinds.Phone._ID,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Phone.DATA1, "sort_key",
-                ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
-                ContactsContract.CommonDataKinds.Phone.PHOTO_ID,
-                ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY };
+        String[] projection = { ContactsContract.CommonDataKinds.Phone._ID, //  "_id" in BaseColumns
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,    //  "display_name" in ContactsColumns
+                ContactsContract.CommonDataKinds.Phone.DATA1,   //  "data1" in DataColumns
+                "sort_key",                                                                 //  ContactNameColumns
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID,  //  "contact_id" in RawContactsColumns
+                ContactsContract.CommonDataKinds.Phone.PHOTO_ID,    //"photo_id" in ContactsColumns
+                ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY   //  "lookup" in ContactsColumns
+        };
         // 按照sort_key升序查詢
         // token令牌，cookie一个对象，uri，projection返回的列，selection过滤器可包含?，selectionArgs过滤的参数，orderBy排序方式
         asyncQueryHandler.startQuery(0, null, uri, projection, null, null, "sort_key COLLATE LOCALIZED asc");
@@ -98,6 +100,7 @@ public class Fragment3 extends Fragment{
                         contactBean.setDesplayName(name);
                         contactBean.setPhoneNum(number);
                         contactBean.setSortKey(sortKey);
+                        contactBean.setContactId(contactId);
                         contactBean.setPhotoId(photoId);
                         contactBean.setLookUpKey(lookUpKey);
                         //  把联系人对象添加到list中

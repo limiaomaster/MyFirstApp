@@ -66,10 +66,10 @@ public class DialAdapter extends BaseAdapter {
         CallLogBean callLogBean = list.get(position);
         switch (callLogBean.getType()) {
             case 1: // 来电:1，
-                holder.call_type.setBackgroundResource(R.drawable.ic_calllog_outgoing_nomal);
+                holder.call_type.setBackgroundResource(R.drawable.ic_calllog_incomming_normal);
                 break;
             case 2://   拨出:2,
-                holder.call_type.setBackgroundResource(R.drawable.ic_calllog_incomming_normal);
+                holder.call_type.setBackgroundResource(R.drawable.ic_calllog_outgoing_nomal);
                 break;
             case 3://   未接:3
                 holder.call_type.setBackgroundResource(R.drawable.ic_calllog_missed_normal);

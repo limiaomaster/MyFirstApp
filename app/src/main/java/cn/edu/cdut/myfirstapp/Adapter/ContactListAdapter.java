@@ -5,7 +5,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,15 +128,18 @@ public class ContactListAdapter extends BaseAdapter {
 
         //  根据从ContactBean对象中得到的各种属性，为holder对象中的属性赋值。
 		holder.name.setText(name);
+        Log.v("holder.name.setText",name);
 		holder.number.setText(number);
 		holder.quickContactBadge.assignContactUri(Contacts.getLookupUri(contactBean.getContactId(), contactBean.getLookUpKey()));
 
         //获取联系人头像
 		if (0 == contactBean.getPhotoId()) {
-			holder.quickContactBadge.setImageResource(R.drawable.touxiang);
+            Log.v("contactBean.getPhotoId",""+contactBean.getPhotoId());
+            holder.quickContactBadge.setImageResource(R.drawable.gg);
 		} else {
-			Uri uri = ContentUris.withAppendedId(Contacts.CONTENT_URI, contactBean.getContactId());
-			InputStream input = Contacts.openContactPhotoInputStream(ctx.getContentResolver(), uri);
+			Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactBean.getContactId());
+            Log.v("withAppendedId",""+uri);
+			InputStream input = Contacts.openContactPhotoInputStream(ctx.getContentResolver(), uri,true);
 			Bitmap contactPhoto = BitmapFactory.decodeStream(input);
 			holder.quickContactBadge.setImageBitmap(contactPhoto);
 		}
