@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class Fragment3 extends Fragment{
      */
     private void init() {
         Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI; // 联系人Uri；
+        Log.v("CommonDataKinds.Phone",""+uri);  //  content://com.android.contacts/data/phones
         // 查询的字段
         String[] projection = { ContactsContract.CommonDataKinds.Phone._ID, //  "_id" in BaseColumns
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,    //  "display_name" in ContactsColumns
@@ -83,7 +85,7 @@ public class Fragment3 extends Fragment{
                 cursor.moveToFirst(); // 游标移动到第一项
                 for (int i = 0; i < cursor.getCount(); i++) {
                     cursor.moveToPosition(i);
-
+                    Log.v("onQueryComplete()","ContactsContract.CommonDataKinds.Phone._ID为："+cursor.getString(0));
                     String name = cursor.getString(1);  //获取第二列的数据，给name
                     String number = cursor.getString(2);    //获取第三列的数据，给number
                     String sortKey = cursor.getString(3);

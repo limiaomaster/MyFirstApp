@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.CallLog;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +29,8 @@ import cn.edu.cdut.myfirstapp.R;
 
 public class Fragment4 extends Fragment {
     private ListView callLogListView;
-    private AsyncQueryHandler asyncQuery;
+    private AsyncQueryHandler asyncQueryHandler;
     private DialAdapter adapter;
-    private List<CallLogBean> callLogs;
 
     @Nullable
     @Override
@@ -39,7 +39,7 @@ public class Fragment4 extends Fragment {
 
         callLogListView = (ListView) view.findViewById(R.id.call_log_list);
 
-        asyncQuery = new MyAsyncQueryHandler(getActivity().getContentResolver());
+        asyncQueryHandler = new MyAsyncQueryHandler(getActivity().getContentResolver());
 
         init();
         return view;
@@ -47,6 +47,7 @@ public class Fragment4 extends Fragment {
 
     private void init() {
         Uri uri = android.provider.CallLog.Calls.CONTENT_URI;
+        Log.v("CallLog.Calls",""+uri);  //  content://call_log/calls
         // 查询的列
         String[] projection = {
                 CallLog.Calls.DATE, // 日期
@@ -54,8 +55,12 @@ public class Fragment4 extends Fragment {
                 CallLog.Calls.TYPE, // 类型
                 CallLog.Calls.CACHED_NAME, // 名字
                 CallLog.Calls._ID, // id
+                CallLog.Calls.CACHED_PHOTO_ID,
+                CallLog.Calls.CACHED_LOOKUP_URI
+                /*ContactsContract.CommonDataKinds.Phone.PHOTO_ID,    //"photo_id" in ContactsColumns
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID,  //  "lookup" in ContactsColumns*/
         };
-        asyncQuery.startQuery(0, null, uri, projection, null, null, CallLog.Calls.DEFAULT_SORT_ORDER);
+        asyncQueryHandler.startQuery(0, null, uri, projection, null, null, CallLog.Calls.DEFAULT_SORT_ORDER);
     }
 
     private class MyAsyncQueryHandler extends AsyncQueryHandler {
@@ -66,28 +71,44 @@ public class Fragment4 extends Fragment {
 
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+            Log.v("onQueryComplete()","查询完成，正在处理，，，");
             if (cursor != null && cursor.getCount() > 0) {
-                callLogs = new ArrayList<CallLogBean>();
+                List<CallLogBean> callLogs = new ArrayList<CallLogBean>();
+
                 SimpleDateFormat sfd = new SimpleDateFormat("MM月dd日HH:mm:ss");
                 Date date;
+
                 cursor.moveToFirst(); // 游标移动到第一项
                 for (int i = 0; i < cursor.getCount(); i++) {
                     cursor.moveToPosition(i);
-                    date = new Date(cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE)));
+
+                    /*date = new Date(cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE)));
                     String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
                     int type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
                     String cachedName = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME));// 缓存的名称与电话号码，如果它的存在
-                    int id = cursor.getInt(cursor.getColumnIndex(CallLog.Calls._ID));
+                    int id = cursor.getInt(cursor.getColumnIndex(CallLog.Calls._ID));*/
+
+                    date = new Date(cursor.getLong(0));
+                    String number = cursor.getString(1);
+                    int type = cursor.getInt(2);
+                    String cachedName = cursor.getString(3);
+                    int id = cursor.getInt(4);
+
+                    Long photoId = cursor.getLong(5);
+
 
                     CallLogBean callLogBean = new CallLogBean();
-                    callLogBean.setId(id);
+
+                    callLogBean.setDate(sfd.format(date));
                     callLogBean.setNumber(number);
-                    callLogBean.setName(cachedName);
+                    callLogBean.setType(type);
                     if (null == cachedName || "".equals(cachedName)) {
                         callLogBean.setName("未知联系人");
                     }
-                    callLogBean.setType(type);
-                    callLogBean.setDate(sfd.format(date));
+                    else callLogBean.setName(cachedName);
+                    callLogBean.setId(id);
+                    callLogBean.setPhotoId(photoId);
+
 
                     callLogs.add(callLogBean);
                 }
@@ -98,6 +119,7 @@ public class Fragment4 extends Fragment {
             super.onQueryComplete(token, cookie, cursor);
         }
     }
+
 
     private void setAdapter(List<CallLogBean> callLogs) {
         adapter = new DialAdapter(getContext(), callLogs);

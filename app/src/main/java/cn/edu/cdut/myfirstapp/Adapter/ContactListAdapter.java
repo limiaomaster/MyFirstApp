@@ -130,7 +130,12 @@ public class ContactListAdapter extends BaseAdapter {
 		holder.name.setText(name);
         Log.v("holder.name.setText",name);
 		holder.number.setText(number);
-		holder.quickContactBadge.assignContactUri(Contacts.getLookupUri(contactBean.getContactId(), contactBean.getLookUpKey()));
+
+        //  为quickContactBage添加Uri，否则点击它不会弹出该联系人卡片。
+        //  可以用两种方法：assignContactFromPhone 和 assignContactUri，后者直接，前者还要根据号码再次查找Uri。
+
+		//holder.quickContactBadge.assignContactUri(Contacts.getLookupUri(contactBean.getContactId(), contactBean.getLookUpKey()));
+        holder.quickContactBadge.assignContactFromPhone(number,false);
 
         //获取联系人头像
 		if (0 == contactBean.getPhotoId()) {
@@ -138,7 +143,9 @@ public class ContactListAdapter extends BaseAdapter {
             holder.quickContactBadge.setImageResource(R.drawable.gg);
 		} else {
 			Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactBean.getContactId());
-            Log.v("withAppendedId",""+uri);
+            Log.v("Contacts.CONTENT_URI",""+ContactsContract.Contacts.CONTENT_URI); //  content://com.android.contacts/contacts
+            Log.v("withAppendedId()",""+uri);
+            Log.v("PhotoId is:",""+contactBean.getPhotoId());
 			InputStream input = Contacts.openContactPhotoInputStream(ctx.getContentResolver(), uri,true);
 			Bitmap contactPhoto = BitmapFactory.decodeStream(input);
 			holder.quickContactBadge.setImageBitmap(contactPhoto);
