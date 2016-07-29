@@ -10,17 +10,29 @@
         android:id="@+id/title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
     </cn.edu.cdut.myfirstapp.Layout.TitleLayout>
 
+    <!--<include
+        android:id="@+id/title_layout"
+        layout="@layout/title_main"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+    </include>-->
 
-    <cn.edu.cdut.myfirstapp.Layout.FootLayout
+    <!--<cn.edu.cdut.myfirstapp.Layout.FootLayout
         android:id="@+id/foot_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
+    </cn.edu.cdut.myfirstapp.Layout.FootLayout>-->
 
-    </cn.edu.cdut.myfirstapp.Layout.FootLayout>
+    <include
+        android:id="@+id/foot_layout"
+        layout="@layout/foot_main"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true">
+    </include>
 
 
     <LinearLayout

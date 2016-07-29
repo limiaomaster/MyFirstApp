@@ -29,7 +29,7 @@ import cn.edu.cdut.myfirstapp.R;
 
 public class Fragment4 extends Fragment {
     private ListView callLogListView;
-    private AsyncQueryHandler asyncQueryHandler;
+    private static AsyncQueryHandler asyncQueryHandler;
     private DialAdapter adapter;
 
     @Nullable
@@ -45,8 +45,9 @@ public class Fragment4 extends Fragment {
         return view;
     }
 
-    private void init() {
+    public static void init() {
         Uri uri = android.provider.CallLog.Calls.CONTENT_URI;
+
         Log.v("CallLog.Calls",""+uri);  //  content://call_log/calls
         // 查询的列
         String[] projection = {
@@ -55,8 +56,8 @@ public class Fragment4 extends Fragment {
                 CallLog.Calls.TYPE, // 类型
                 CallLog.Calls.CACHED_NAME, // 名字
                 CallLog.Calls._ID, // id
-                CallLog.Calls.CACHED_PHOTO_ID,
-                CallLog.Calls.CACHED_LOOKUP_URI
+                //CallLog.Calls.CACHED_PHOTO_ID,
+                //CallLog.Calls.CACHED_LOOKUP_URI
                 /*ContactsContract.CommonDataKinds.Phone.PHOTO_ID,    //"photo_id" in ContactsColumns
                 ContactsContract.CommonDataKinds.Phone.CONTACT_ID,  //  "lookup" in ContactsColumns*/
         };
@@ -71,7 +72,7 @@ public class Fragment4 extends Fragment {
 
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
-            Log.v("onQueryComplete()","查询完成，正在处理，，，");
+            Log.v("Cal Log----","onQueryComplete() 开始处理数据---------------------");
             if (cursor != null && cursor.getCount() > 0) {
                 List<CallLogBean> callLogs = new ArrayList<CallLogBean>();
 
@@ -93,8 +94,8 @@ public class Fragment4 extends Fragment {
                     int type = cursor.getInt(2);
                     String cachedName = cursor.getString(3);
                     int id = cursor.getInt(4);
-
-                    Long photoId = cursor.getLong(5);
+                    //Long cachedPhotoId = cursor.getLong(5);
+                    //Log.v("Cal Log----","cachedPhotoId 是 "+cachedPhotoId);
 
 
                     CallLogBean callLogBean = new CallLogBean();
@@ -107,7 +108,7 @@ public class Fragment4 extends Fragment {
                     }
                     else callLogBean.setName(cachedName);
                     callLogBean.setId(id);
-                    callLogBean.setPhotoId(photoId);
+                   // callLogBean.setCachedPhotoId(cachedPhotoId);
 
 
                     callLogs.add(callLogBean);
@@ -117,6 +118,7 @@ public class Fragment4 extends Fragment {
                 }
             }
             super.onQueryComplete(token, cookie, cursor);
+            Log.v("Cal Log----","onQueryComplete() 数据处理结束---------------------");
         }
     }
 

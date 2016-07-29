@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="60dp"
     android:orientation="horizontal"
     android:layout_gravity="bottom"
@@ -22,7 +22,8 @@
             android:id="@+id/iv_zhuye"
             android:layout_width="55dp"
             android:layout_height="40dp"
-            android:src="@drawable/bt_menu_0_select" />
+            android:src="@drawable/bt_menu_0_select"
+            android:contentDescription="calllog" />
 
         <TextView
             android:id="@+id/tv_zhuye"
@@ -43,15 +44,14 @@
         android:orientation="vertical"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
-
-        >
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/mic" />
+            android:src="@drawable/mic"
+            android:contentDescription="this mic" />
 
     </LinearLayout>
 
@@ -62,16 +62,14 @@
         android:orientation="vertical"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
-
-
-        >
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/iv_wode"
             android:layout_width="55dp"
             android:layout_height="40dp"
-            android:src="@drawable/bt_menu_2_select" />
+            android:src="@drawable/bt_menu_2_select"
+            android:contentDescription="contacts" />
 
         <TextView
             android:id="@+id/tv_wode"

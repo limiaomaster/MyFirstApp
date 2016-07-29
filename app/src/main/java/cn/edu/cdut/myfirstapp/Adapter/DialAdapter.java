@@ -1,5 +1,6 @@
 package cn.edu.cdut.myfirstapp.Adapter;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -89,15 +90,23 @@ public class DialAdapter extends BaseAdapter {
         holder.name.setText(callLogBean.getName());
         holder.number.setText(callLogBean.getNumber());
         holder.time.setText(callLogBean.getDate());
+
+        String cotactId = getContactId(ctx,callLogBean.getNumber());
+        int photoId = getPhotoIdByNumber(ctx,callLogBean.getNumber());
+        Log.v("Cal Log----","name 是 "+callLogBean.getName());
+        Log.v("Cal Log----","number 是 "+callLogBean.getNumber());
+        Log.v("Cal Log----","time 是 "+callLogBean.getDate());
+        //Log.v("Cal Log----","getCachedPhotoId() 是 "+callLogBean.getCachedPhotoId());
+        Log.v("Cal Log----","contact_id 是"+cotactId);
         holder.quickContactBadge.assignContactFromPhone(callLogBean.getNumber(),false);
 
-        if (0 == callLogBean.getPhotoId()) {
-            Log.v("contactBean.getPhotoId",""+callLogBean.getPhotoId());
+
+        if (0 == photoId) {
             holder.quickContactBadge.setImageResource(R.drawable.gg);
         } else {
-            Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(getContactId(ctx,callLogBean.getNumber())));
-            Log.v("withAppendedId",""+uri);
-            InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(ctx.getContentResolver(), uri,true);
+            Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(cotactId));
+
+            InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(ctx.getContentResolver(), uri);
             Bitmap contactPhoto = BitmapFactory.decodeStream(input);
             holder.quickContactBadge.setImageBitmap(contactPhoto);
         }
@@ -108,7 +117,7 @@ public class DialAdapter extends BaseAdapter {
     }
 
 
-    public static String getContactId(Context context, String number) {
+    private static String getContactId(Context context, String number) {
         Cursor c = null;
         try {
             c = context.getContentResolver().query(
@@ -135,6 +144,20 @@ public class DialAdapter extends BaseAdapter {
             }
         }
         return null;
+    }
+
+    protected static int getPhotoIdByNumber(Context context,String number) {
+        int photoId = 0;
+        //利用phone_lookup数据表所对应的ContentProvider进行查询
+        ContentResolver cr = context.getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, number);
+        Cursor c = cr.query(uri , new String[]{ContactsContract.PhoneLookup.PHOTO_ID}, null, null, null);
+        //如果提供的电话号码确实是有头像的
+        if(c.moveToNext()){
+            photoId = c.getInt(0);
+        }
+        c.close();
+        return photoId;
     }
 
 

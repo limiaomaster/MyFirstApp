@@ -3,8 +3,6 @@ package cn.edu.cdut.myfirstapp.Layout;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,7 +14,7 @@ import cn.edu.cdut.myfirstapp.R;
  * Created by Administrator on 2016/5/26 0026.
  */
 
-public class FootLayout extends RelativeLayout implements  OnClickListener {
+public class FootLayout extends RelativeLayout {
 
     private int index;
     private int currentIndex;
@@ -61,7 +59,7 @@ public class FootLayout extends RelativeLayout implements  OnClickListener {
 
 
 
-    @Override
+    /*@Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.LL_zhuye:
@@ -80,5 +78,5 @@ public class FootLayout extends RelativeLayout implements  OnClickListener {
         textViews[index].setTextColor(getResources().getColor(R.color.selected));
 
         currentIndex = index;
-    }
+    }*/
 }

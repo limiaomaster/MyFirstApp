@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -57,7 +56,7 @@ public class QuickAlphabeticBar extends ImageButton {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        Log.v("onMeasure()","我被调用了！");
+        //Log.v("onMeasure()","我被调用了！");
         // this.mHight = this.getHeight();
 
     }
@@ -74,7 +73,7 @@ public class QuickAlphabeticBar extends ImageButton {
 	// 设置需要索引的列表
 	public void setListView(ListView mList) {
 		this.mListView = mList;
-        Log.v("setListView()","this.mList = mList;");
+        //Log.v("setListView()","this.mList = mList;");
 	}
 
 	// 设置字母索引哈希表
@@ -86,27 +85,27 @@ public class QuickAlphabeticBar extends ImageButton {
 	// 设置字母索引条的高度
 	public void setHight(float mHight) {
 		this.mHight = mHight;
-        Log.v("setHight()","this.mHight = mHight;");
-		Log.v("setHight()","传进来的参数mHight = "+mHight);
+        //Log.v("setHight()","this.mHight = mHight;");
+		//Log.v("setHight()","传进来的参数mHight = "+mHight);
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		Log.v("onTouchEvent()","onTouchEvent方法开始执行------------------------------------>");
+		//Log.v("onTouchEvent()","onTouchEvent方法开始执行------------------------------------>");
 		int act = event.getAction();
 		float y = event.getY();
-        Log.v("onTouchEvent()","手指点击位置的Y坐标为："+y);
+       // Log.v("onTouchEvent()","手指点击位置的Y坐标为："+y);
 		final int oldChoose = choose;
 		// 计算手指位置，找到对应的段，让mList移动段开头的位置上
 		int selectIndex = (int) (y / (mHight / string_A2Z.length));//第几号字母
-        Log.v("onTouchEvent()","所以点击的是第 "+selectIndex+" 号字母");
+      //  Log.v("onTouchEvent()","所以点击的是第 "+selectIndex+" 号字母");
 		//Log.v("onTouchEvent","快速滚动条的实际高度为："+mHight);
 
 		if (selectIndex > -1 && selectIndex < string_A2Z.length) { // 防止越界
 			String key = string_A2Z[selectIndex]; //根据几号字母，得到字母，2就是C。
-            Log.v("onTouchEvent()","该字母是 "+key);
+         //   Log.v("onTouchEvent()","该字母是 "+key);
 			if (hashMap.containsKey(key)) {	//如果哈希表中包含所点击的字母，就让中间显示出该字母，否则不显示。
-                Log.v("onTouchEvent()","您的联系人中有该字母的人！");
+            //    Log.v("onTouchEvent()","您的联系人中有该字母的人！");
 				int pos = hashMap.get(key);	//根据Key得到Value，根据点击的字母得到第几位联系人。
 
 				if (mListView.getHeaderViewsCount() > 0) { // 防止ListView有标题栏,本例中没有
@@ -118,7 +117,7 @@ public class QuickAlphabeticBar extends ImageButton {
 				mDialogText.setText(string_A2Z[selectIndex]);
 			}
             else
-                Log.v("onTouchEvent()","您的联系人中没有该字母的人！！");
+               Log.v("onTouchEvent()","您的联系人中没有该字母的人！！");
 		}
         //完成此if后，只会显示有该拼音的联系人首字母，不会显示没有该联系人的字母。
         //比如没有R开头的联系人，就不会显示R。
@@ -184,7 +183,7 @@ public class QuickAlphabeticBar extends ImageButton {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-        Log.v("onDrew()","onDraw()方法得到执行----------->");
+     //   Log.v("onDrew()","onDraw()方法得到执行----------->");
         //在onDraw()方法中才能调用getHeight()方法来获取滚动条的高度，因为只有fragment3显示出来的时候，才会调用onDraw()方法
         //来执行绘制滚动条，只有滚动条被绘制出来了，才能获取高度，否则高度为0！
 		int height = getHeight();
@@ -192,7 +191,7 @@ public class QuickAlphabeticBar extends ImageButton {
         this.mHight = height;
 
 		int width = getWidth();
-        Log.v("onDrew()-->getWidth()","得到的宽度为："+width);
+     //   Log.v("onDrew()-->getWidth()","得到的宽度为："+width);
 
         int sigleHeight = height / string_A2Z.length; // 单个字母占的高度
 
@@ -209,9 +208,9 @@ public class QuickAlphabeticBar extends ImageButton {
 			}
 			// 绘画的位置
 			float xPos = width / 2 - paint.measureText(string_A2Z[i]) / 2;
-            Log.v("onDrew()","绘画的位置为：X坐标    "+xPos);
+       //     Log.v("onDrew()","绘画的位置为：X坐标    "+xPos);
 			float yPos = sigleHeight * i + sigleHeight;
-            Log.v("onDrew()","绘画的位置为：Y坐标    "+yPos);
+        //    Log.v("onDrew()","绘画的位置为：Y坐标    "+yPos);
 			canvas.drawText(string_A2Z[i], xPos, yPos, paint);
 			paint.reset();
 		}

@@ -43,8 +43,6 @@ public class Fragment3 extends Fragment{
         alphabeticBar = (QuickAlphabeticBar) view.findViewById(R.id.fast_scroller);
         asyncQueryHandler = new MyAsyncQueryHandler(getActivity().getContentResolver());
 
-
-
         init();
         return view;
     }
@@ -77,6 +75,7 @@ public class Fragment3 extends Fragment{
 
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+            Log.v("Contacts----","onQueryComplete() 开始处理数据---------------------");
             if (cursor != null && cursor.getCount() > 0) {  //如果找到数据了，游标不为空 并且 找到的行数大于0；
 
                 Map<Integer, ContactBean> contactIdMap = new HashMap<Integer, ContactBean>();
@@ -85,7 +84,7 @@ public class Fragment3 extends Fragment{
                 cursor.moveToFirst(); // 游标移动到第一项
                 for (int i = 0; i < cursor.getCount(); i++) {
                     cursor.moveToPosition(i);
-                    Log.v("onQueryComplete()","ContactsContract.CommonDataKinds.Phone._ID为："+cursor.getString(0));
+                    //Log.v("Contacts----","Phone._ID为："+cursor.getString(0));
                     String name = cursor.getString(1);  //获取第二列的数据，给name
                     String number = cursor.getString(2);    //获取第三列的数据，给number
                     String sortKey = cursor.getString(3);
@@ -117,6 +116,7 @@ public class Fragment3 extends Fragment{
                 }
             }
             super.onQueryComplete(token, cookie, cursor);
+            Log.v("Contacts----","onQueryComplete() 数据处理结束---------------------");
         }
     }
 

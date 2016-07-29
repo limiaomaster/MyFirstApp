@@ -12,19 +12,19 @@ public class CallLogBean {
     private String date; // 日期
     private int type; // 来电:1，拨出:2,未接:3
     private int count; // 通话次数
-    private Long photoId;
+    private Long cachedphotoId;
     private String  uri;
 
-    public Long getPhotoId() {
-        return photoId;
+    public Long getCachedPhotoId() {
+        return cachedphotoId;
     }
 
     public String getUri() {
         return uri;
     }
 
-    public void setPhotoId(Long photoId) {
-        this.photoId = photoId;
+    public void setCachedPhotoId(Long photoId) {
+        this.cachedphotoId = photoId;
     }
 
     public void setUri(String uri) {
