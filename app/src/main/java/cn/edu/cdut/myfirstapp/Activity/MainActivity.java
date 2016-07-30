@@ -78,7 +78,7 @@ public class MainActivity extends  FragmentActivity implements OnClickListener {
         switch (v.getId()) {
             case R.id.LL_zhuye:
                 index = 0;
-                Fragment4.init();
+                //Fragment4.init();
 
                 break;
 

@@ -1,15 +1,12 @@
 package cn.edu.cdut.myfirstapp.Adapter;
 
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +21,6 @@ import java.util.List;
 
 import cn.edu.cdut.myfirstapp.Model.CallLogBean;
 import cn.edu.cdut.myfirstapp.R;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Administrator on 2016/7/26 0026.
@@ -91,20 +86,22 @@ public class DialAdapter extends BaseAdapter {
         holder.number.setText(callLogBean.getNumber());
         holder.time.setText(callLogBean.getDate());
 
-        String cotactId = getContactId(ctx,callLogBean.getNumber());
-        int photoId = getPhotoIdByNumber(ctx,callLogBean.getNumber());
+        //String cotactId = getContactId(ctx,callLogBean.getNumber());
+        int photoId = callLogBean.getPhotoId();
+        //int photoId = getPhotoIdByNumber(ctx,callLogBean.getNumber());
+
         Log.v("Cal Log----","name 是 "+callLogBean.getName());
         Log.v("Cal Log----","number 是 "+callLogBean.getNumber());
         Log.v("Cal Log----","time 是 "+callLogBean.getDate());
         //Log.v("Cal Log----","getCachedPhotoId() 是 "+callLogBean.getCachedPhotoId());
-        Log.v("Cal Log----","contact_id 是"+cotactId);
+        Log.v("Cal Log----","contact_id 是"+callLogBean.getContactId());
         holder.quickContactBadge.assignContactFromPhone(callLogBean.getNumber(),false);
 
 
         if (0 == photoId) {
             holder.quickContactBadge.setImageResource(R.drawable.gg);
         } else {
-            Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(cotactId));
+            Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, callLogBean.getContactId());
 
             InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(ctx.getContentResolver(), uri);
             Bitmap contactPhoto = BitmapFactory.decodeStream(input);
@@ -117,11 +114,10 @@ public class DialAdapter extends BaseAdapter {
     }
 
 
-    private static String getContactId(Context context, String number) {
+    /*private static String getContactId(Context context, String number) {
         Cursor c = null;
         try {
-            c = context.getContentResolver().query(
-                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            c = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                     new String[] {
                             ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
                             ContactsContract.CommonDataKinds.Phone.NUMBER
@@ -144,9 +140,9 @@ public class DialAdapter extends BaseAdapter {
             }
         }
         return null;
-    }
+    }*/
 
-    protected static int getPhotoIdByNumber(Context context,String number) {
+    /*protected static int getPhotoIdByNumber(Context context,String number) {
         int photoId = 0;
         //利用phone_lookup数据表所对应的ContentProvider进行查询
         ContentResolver cr = context.getContentResolver();
@@ -158,7 +154,7 @@ public class DialAdapter extends BaseAdapter {
         }
         c.close();
         return photoId;
-    }
+    }*/
 
 
     private static class ViewHolder {

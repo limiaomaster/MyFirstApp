@@ -2,12 +2,15 @@ package cn.edu.cdut.myfirstapp.Fragment;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CallLog;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +25,8 @@ import java.util.List;
 import cn.edu.cdut.myfirstapp.Adapter.DialAdapter;
 import cn.edu.cdut.myfirstapp.Model.CallLogBean;
 import cn.edu.cdut.myfirstapp.R;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Administrator on 2016/7/26 0026.
@@ -62,6 +67,7 @@ public class Fragment4 extends Fragment {
                 ContactsContract.CommonDataKinds.Phone.CONTACT_ID,  //  "lookup" in ContactsColumns*/
         };
         asyncQueryHandler.startQuery(0, null, uri, projection, null, null, CallLog.Calls.DEFAULT_SORT_ORDER);
+        Log.v("Cal Log----","startQuery() 开始查找=====================");
     }
 
     private class MyAsyncQueryHandler extends AsyncQueryHandler {
@@ -72,7 +78,7 @@ public class Fragment4 extends Fragment {
 
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
-            Log.v("Cal Log----","onQueryComplete() 开始处理数据---------------------");
+            Log.v("Cal Log----","onQueryComplete() 查询结束，开始处理数据---------------------");
             if (cursor != null && cursor.getCount() > 0) {
                 List<CallLogBean> callLogs = new ArrayList<CallLogBean>();
 
@@ -94,6 +100,12 @@ public class Fragment4 extends Fragment {
                     int type = cursor.getInt(2);
                     String cachedName = cursor.getString(3);
                     int id = cursor.getInt(4);
+
+                    int photoId = getPhotoIdByNumber(getContext(),number);
+
+                    String s = getContactIdByNumber(getContext(),number);
+                    Log.v("Cal Log----","getContactIdByNumber() 是 "+s);
+                    int contactId = Integer.parseInt(s);
                     //Long cachedPhotoId = cursor.getLong(5);
                     //Log.v("Cal Log----","cachedPhotoId 是 "+cachedPhotoId);
 
@@ -108,8 +120,8 @@ public class Fragment4 extends Fragment {
                     }
                     else callLogBean.setName(cachedName);
                     callLogBean.setId(id);
-                   // callLogBean.setCachedPhotoId(cachedPhotoId);
-
+                    callLogBean.setPhotoId(photoId);
+                    callLogBean.setContactId(contactId);
 
                     callLogs.add(callLogBean);
                 }
@@ -122,6 +134,48 @@ public class Fragment4 extends Fragment {
         }
     }
 
+
+    private static int getPhotoIdByNumber(Context context, String number) {
+        int photoId = 0;
+        //利用phone_lookup数据表所对应的ContentProvider进行查询
+        ContentResolver cr = context.getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, number);
+        Cursor c = cr.query(uri , new String[]{ContactsContract.PhoneLookup.PHOTO_ID}, null, null, null);
+        //如果提供的电话号码确实是有头像的
+        if(c.moveToNext()){
+            photoId = c.getInt(0);
+        }
+        c.close();
+        return photoId;
+    }
+
+    private static String getContactIdByNumber(Context context, String number) {
+        Cursor c = null;
+        try {
+            c = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    new String[] {
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+                            ContactsContract.CommonDataKinds.Phone.NUMBER
+                    },
+                    null,null,null
+            );
+            if (c != null && c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+
+                    if (PhoneNumberUtils.compare(number, c.getString(1))) {
+                        return c.getString(0);
+                    }
+                    c.moveToNext();
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "getContactId error:", e);
+        } finally {
+            if (c != null) {c.close();
+            }
+        }
+        return "0";
+    }
 
     private void setAdapter(List<CallLogBean> callLogs) {
         adapter = new DialAdapter(getContext(), callLogs);
