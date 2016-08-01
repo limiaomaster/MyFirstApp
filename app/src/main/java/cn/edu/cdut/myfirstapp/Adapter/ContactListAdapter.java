@@ -144,7 +144,7 @@ public class ContactListAdapter extends BaseAdapter {
 
         //获取联系人头像
 		if (0 == contactBean.getPhotoId()) {
-            holder.quickContactBadge.setImageResource(R.drawable.gg);
+            holder.quickContactBadge.setImageResource(R.drawable.hh);
 		} else {
 			Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactBean.getContactId());
 

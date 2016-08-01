@@ -96,6 +96,8 @@ public class Fragment4 extends Fragment {
                     int id = cursor.getInt(cursor.getColumnIndex(CallLog.Calls._ID));*/
 
                     date = new Date(cursor.getLong(0));
+                    Log.v("Cal Log----","date = new Date(cursor.getLong(0)); 是 "+date); //  Sun Jul 31 21:58:18 GMT+08:00 2016
+
                     String number = cursor.getString(1);
                     int type = cursor.getInt(2);
                     String cachedName = cursor.getString(3);
@@ -104,7 +106,7 @@ public class Fragment4 extends Fragment {
                     int photoId = getPhotoIdByNumber(getContext(),number);
 
                     String s = getContactIdByNumber(getContext(),number);
-                    Log.v("Cal Log----","getContactIdByNumber() 是 "+s);
+                    Log.v("Cal Log----","getContactIdByNumber() 是 "+s); //  370
                     int contactId = Integer.parseInt(s);
                     //Long cachedPhotoId = cursor.getLong(5);
                     //Log.v("Cal Log----","cachedPhotoId 是 "+cachedPhotoId);

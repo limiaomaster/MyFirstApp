@@ -99,7 +99,7 @@ public class DialAdapter extends BaseAdapter {
 
 
         if (0 == photoId) {
-            holder.quickContactBadge.setImageResource(R.drawable.gg);
+            holder.quickContactBadge.setImageResource(R.drawable.hh);
         } else {
             Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, callLogBean.getContactId());
 
